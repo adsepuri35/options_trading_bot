@@ -62,7 +62,7 @@ X = 102  # Strike price
 r = 0.05  # Risk-free interest rate
 q = 0.02  # Dividend yield
 T = 0.8  # Time to expiration (in years)
-sigma = 0.3  # Volatility
+sigma = 0.1  # Volatility
 option_type = 'call'  # Option type ('call' or 'put')
 
 price, delta, gamma, vega, theta, rho = barone_adesi_whaley(S, X, r, q, T, sigma, option_type) 
