@@ -16,11 +16,11 @@ def barone_adesi_whaley(S, X, r, q, T, sigma, option_type):
 
     Returns:
     - price (float): Option price
-    - delta (float): Option delta
-    - gamma (float): Option gamma
-    - vega (float): Option vega
-    - theta (float): Option theta
-    - rho (float): Option rho
+    - delta (float): Option delta - The sensitivity of the option price to changes in the underlying asset price
+    - gamma (float): Option gamma - The sensitivity of the option delta to changes in the underlying asset price
+    - vega (float): Option vega - The sensitivity of the option price to changes in the volatility of the underlying asset
+    - theta (float): Option theta - The sensitivity of the option price to changes in the time to expiration
+    - rho (float): Option rho - The sensitivity of the option price to changes in the risk-free interest rate
     """
     d1 = (math.log(S / X) + (r - q + 0.5 * sigma**2) * T) / (sigma * math.sqrt(T))
     d2 = d1 - sigma * math.sqrt(T)
