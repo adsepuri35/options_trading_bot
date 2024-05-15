@@ -43,7 +43,7 @@ def monte_carlo(S0, K, r, sigma, T, num_paths, option_type):
 S0 = 100  # Initial asset price
 K = 102  # Strike price
 r = 0.05  # Risk-free rate
-sigma = 0.1  # Volatility
+sigma = 0.15  # Volatility
 T = 0.8  # Time to expiration
 N = 1000  # Number of paths
 option_type = 'call'  # Option type ('call' or 'put')
