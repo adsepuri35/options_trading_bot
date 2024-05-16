@@ -1,5 +1,6 @@
 import math
 from scipy.stats import norm
+import numpy as np
 
 def barone_adesi_whaley(S, X, r, q, T, sigma, option_type):
     """
@@ -22,35 +23,35 @@ def barone_adesi_whaley(S, X, r, q, T, sigma, option_type):
     - theta (float): Option theta - The sensitivity of the option price to changes in the time to expiration
     - rho (float): Option rho - The sensitivity of the option price to changes in the risk-free interest rate
     """
-    d1 = (math.log(S / X) + (r - q + 0.5 * sigma**2) * T) / (sigma * math.sqrt(T))
-    d2 = d1 - sigma * math.sqrt(T)
+    d1 = (math.log(S / X) + (r - q + 0.5 * sigma**2) * T) / (sigma * np.sqrt(T))
+    d2 = d1 - sigma * np.sqrt(T)
 
     if option_type == 'call':
-        alpha = (-(r - q) + math.sqrt((r - q)**2 + 2 * r * sigma**2)) / (sigma**2)
-        beta = (-(r - q) - math.sqrt((r - q)**2 + 2 * r * sigma**2)) / (sigma**2)
-        h1 = -(r - q) * T + 2 * sigma * math.sqrt(T) * d1
-        h2 = -(r - q) * T + 2 * sigma * math.sqrt(T) * d2
-        price = (S * math.exp(-q * T) * norm.cdf(d1) - X * math.exp(-r * T) * norm.cdf(d2) +
-                 (S * math.exp(-q * T) * (h1 / (1 + h1)) * norm.cdf(alpha) -
-                  X * math.exp(-r * T) * (h2 / (1 + h2)) * norm.cdf(beta)))
-        delta = math.exp(-q * T) * norm.cdf(d1)
-        gamma = math.exp(-q * T) * norm.pdf(d1) / (S * sigma * math.sqrt(T))
-        vega = S * math.exp(-q * T) * norm.pdf(d1) * math.sqrt(T)
-        theta = -(S * sigma * math.exp(-q * T) * norm.pdf(d1)) / (2 * math.sqrt(T)) - q * S * math.exp(-q * T) * norm.cdf(d1) + r * X * math.exp(-r * T) * norm.cdf(d2)
-        rho = X * T * math.exp(-r * T) * norm.cdf(d2)
+        alpha = (-(r - q) + np.sqrt((r - q)**2 + 2 * r * sigma**2)) / (sigma**2)
+        beta = (-(r - q) - np.sqrt((r - q)**2 + 2 * r * sigma**2)) / (sigma**2)
+        h1 = -(r - q) * T + 2 * sigma * np.sqrt(T) * d1
+        h2 = -(r - q) * T + 2 * sigma * np.sqrt(T) * d2
+        price = (S * np.exp(-q * T) * norm.cdf(d1) - X * np.exp(-r * T) * norm.cdf(d2) +
+                 (S * np.exp(-q * T) * (h1 / (1 + h1)) * norm.cdf(alpha) -
+                  X * np.exp(-r * T) * (h2 / (1 + h2)) * norm.cdf(beta)))
+        delta = np.exp(-q * T) * norm.cdf(d1)
+        gamma = np.exp(-q * T) * norm.pdf(d1) / (S * sigma * np.sqrt(T))
+        vega = S * np.exp(-q * T) * norm.pdf(d1) * np.sqrt(T)
+        theta = -(S * sigma * np.exp(-q * T) * norm.pdf(d1)) / (2 * np.sqrt(T)) - q * S * np.exp(-q * T) * norm.cdf(d1) + r * X * np.exp(-r * T) * norm.cdf(d2)
+        rho = X * T * np.exp(-r * T) * norm.cdf(d2)
     elif option_type == 'put':
-        alpha = (-(r - q) - math.sqrt((r - q)**2 + 2 * r * sigma**2)) / (sigma**2)
-        beta = (-(r - q) + math.sqrt((r - q)**2 + 2 * r * sigma**2)) / (sigma**2)
-        h1 = -(r - q) * T - 2 * sigma * math.sqrt(T) * d1
-        h2 = -(r - q) * T - 2 * sigma * math.sqrt(T) * d2
-        price = (X * math.exp(-r * T) * norm.cdf(-d2) - S * math.exp(-q * T) * norm.cdf(-d1) +
-                 (X * math.exp(-r * T) * (h2 / (1 - h2)) * norm.cdf(-beta) -
-                  S * math.exp(-q * T) * (h1 / (1 - h1)) * norm.cdf(-alpha)))
-        delta = -math.exp(-q * T) * norm.cdf(-d1)
-        gamma = math.exp(-q * T) * norm.pdf(d1) / (S * sigma * math.sqrt(T))
-        vega = S * math.exp(-q * T) * norm.pdf(d1) * math.sqrt(T)
-        theta = -(S * sigma * math.exp(-q * T) * norm.pdf(d1)) / (2 * math.sqrt(T)) + q * S * math.exp(-q * T) * norm.cdf(-d1) - r * X * math.exp(-r * T) * norm.cdf(-d2)
-        rho = -X * T * math.exp(-r * T) * norm.cdf(-d2)
+        alpha = (-(r - q) - np.sqrt((r - q)**2 + 2 * r * sigma**2)) / (sigma**2)
+        beta = (-(r - q) + np.sqrt((r - q)**2 + 2 * r * sigma**2)) / (sigma**2)
+        h1 = -(r - q) * T - 2 * sigma * np.sqrt(T) * d1
+        h2 = -(r - q) * T - 2 * sigma * np.sqrt(T) * d2
+        price = (X * np.exp(-r * T) * norm.cdf(-d2) - S * np.exp(-q * T) * norm.cdf(-d1) +
+                 (X * np.exp(-r * T) * (h2 / (1 - h2)) * norm.cdf(-beta) -
+                  S * np.exp(-q * T) * (h1 / (1 - h1)) * norm.cdf(-alpha)))
+        delta = -np.exp(-q * T) * norm.cdf(-d1)
+        gamma = np.exp(-q * T) * norm.pdf(d1) / (S * sigma * np.sqrt(T))
+        vega = S * np.exp(-q * T) * norm.pdf(d1) * np.sqrt(T)
+        theta = -(S * sigma * np.exp(-q * T) * norm.pdf(d1)) / (2 * np.sqrt(T)) + q * S * np.exp(-q * T) * norm.cdf(-d1) - r * X * np.exp(-r * T) * norm.cdf(-d2)
+        rho = -X * T * np.exp(-r * T) * norm.cdf(-d2)
     else:
         raise ValueError("Invalid option type. Must be 'call' or 'put'.")
 
