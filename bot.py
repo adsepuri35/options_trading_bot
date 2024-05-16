@@ -1,6 +1,9 @@
-import alpaca_trade_api as tradeapi
 from models.baw import barone_adesi_whaley
 import yfinance as yf
+from datetime import datetime
+
+# Get the current date
+current_date = datetime.now()
 
 # Define the ticker symbol for the stock you're interested in
 ticker_symbol = 'AAPL'
@@ -18,6 +21,18 @@ puts = options_data.puts
 # Now you can access data about the call options and put options
 print(calls)
 print(puts)
+
+risk_free_rate = 0.05
+# Get dividend yield
+dividend_yield = ticker.info['dividendYield']
+
+for index, row in calls.iterrows():
+    strike = row['strike']
+    lastPrice = row['lastPrice']
+    volatility = row['impliedVolatility']
+    time_to_expiration = (calls['lastTradeDate'] - current_date).dt.days / 365.0
+    price, delta, gamma, vega, theta, rho = barone_adesi_whaley(lastPrice, strike, risk_free_rate, dividend_yield, time_to_expiration, volatility, 'call')
+
 
 # # Define your trading parameters
 # symbol = 'AAPL'
