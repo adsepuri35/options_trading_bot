@@ -1,13 +1,10 @@
-import sys
-sys.path.append('/Users/nithyaab/.local/lib/python3.11/site-packages')
-sys.path.append('/opt/anaconda3/lib/python3.11/site-packages')
+
 import math
 from scipy.stats import norm
 import pandas as pandas
 from datetime import datetime
-from BAW import barone_adesi_whaley
+from models.baw import barone_adesi_whaley
 import yfinance as yf
-print(sys.path)
 
 
 def backtest_option(symbol, startD, endD, freq = '1d'):
