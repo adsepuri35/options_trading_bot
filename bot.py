@@ -1,6 +1,9 @@
 from models.baw import barone_adesi_whaley
 import yfinance as yf
 from datetime import datetime
+from fredapi import Fred
+from pytz import utc
+
 
 # Get the current date
 current_date = datetime.now()
@@ -18,13 +21,20 @@ options_data = ticker.option_chain()
 calls = options_data.calls
 puts = options_data.puts
 
-# Now you can access data about the call options and put options
-print(calls)
-print(puts)
 
-risk_free_rate = 0.05
+# Set your API key
+fred = Fred(api_key='a960e3f5850c128c7669ac7a257703ab')
+
+# Get the 10-year U.S. Treasury yield
+data = fred.get_series('GS10')
+risk_free_rate = data.iloc[-1] / 100
+
 # Get dividend yield
 dividend_yield = ticker.info['dividendYield']
+
+
+# Get the current date
+current_date = datetime.now(utc)
 
 for index, row in calls.iterrows():
     strike = row['strike']
