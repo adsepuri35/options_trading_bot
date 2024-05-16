@@ -56,19 +56,19 @@ def barone_adesi_whaley(S, X, r, q, T, sigma, option_type):
 
     return price, delta, gamma, vega, theta, rho
 
-# Example usage
-S = 100  # Stock price
-X = 102  # Strike price
-r = 0.05  # Risk-free interest rate
-q = 0.02  # Dividend yield
-T = 0.8  # Time to expiration (in years)
-sigma = 0.15  # Volatility
-option_type = 'call'  # Option type ('call' or 'put')
+# # Example usage
+# S = 100  # Stock price
+# X = 102  # Strike price
+# r = 0.05  # Risk-free interest rate
+# q = 0.02  # Dividend yield
+# T = 0.8  # Time to expiration (in years)
+# sigma = 0.15  # Volatility
+# option_type = 'call'  # Option type ('call' or 'put')
 
-price, delta, gamma, vega, theta, rho = barone_adesi_whaley(S, X, r, q, T, sigma, option_type) 
-print("Option price:", price)
-print("Delta:", delta)
-print("Gamma:", gamma)
-print("Vega:", vega)
-print("Theta:", theta)
-print("Rho:", rho)
+# price, delta, gamma, vega, theta, rho = barone_adesi_whaley(S, X, r, q, T, sigma, option_type) 
+# print("Option price:", price)
+# print("Delta:", delta)
+# print("Gamma:", gamma)
+# print("Vega:", vega)
+# print("Theta:", theta)
+# print("Rho:", rho)
