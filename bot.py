@@ -17,7 +17,16 @@ risk_free_rate = data.iloc[-1] / 100
 
 significance = 0.07
 
-# Function that returns list of options to make a trade on with associated option id's
+"""
+    This function returns a list of option contract symbols to trade on.
+
+    Parameters:
+    ticker_symbol (str): The ticker symbol of the stock to trade options on.
+    model (str): The model to use for deciding which options to trade.
+
+    Returns:
+    list: A list of option contract symbols to trade on.
+"""
 def run_bot(ticker_symbol, model):
 
     # Create a Ticker object
@@ -104,5 +113,5 @@ def run_bot(ticker_symbol, model):
     return trades
 
 # # Sample Implementation
-# list_of_trades = run_bot("AAPL", "mc")
+# list_of_trades = run_bot("AAPL", "baw")
 # print(list_of_trades)
