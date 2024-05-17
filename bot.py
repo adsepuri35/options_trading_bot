@@ -28,11 +28,15 @@ significance = 0.07
 
     Parameters:
     ticker_symbol (str): The ticker symbol of the stock to trade options on.
+    backtest (bool): Whether to run the bot in backtest mode. Default is False. (For backtesting purposes only)
+    start_date (str): The start date of the backtest period. (For backtesting purposes only)
+    end_date (str): The end date of the backtest period. (For backtesting purposes only)
+    freq (str): The frequency of the data. Default is '1d' for daily data. (For backtesting purposes only)
 
     Returns:
     list: A list of option contract symbols to trade on.
 """
-def run_bot(ticker_symbol):
+def run_bot(ticker_symbol, backtest=False, start_date=None, end_date=None, freq = '1d'):
 
     # Create a Ticker object
     ticker = yf.Ticker(ticker_symbol)
@@ -56,6 +60,9 @@ def run_bot(ticker_symbol):
 
     for expiration_date in ticker.options:
         options_data = ticker.option_chain(expiration_date)
+
+        if (backtest):
+            options_data = ticker.history(start=start_date, end=end_date, interval=freq)
 
         # The option_chain method returns a named tuple with two dataframes: calls and puts
         calls = options_data.calls

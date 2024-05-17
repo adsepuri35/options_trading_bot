@@ -13,7 +13,7 @@ def backtest_bot(symbol, startD, endD, freq = '1d'):
     totalProfit = 0
     for index, row in data.iterrows():
         S = row['Close'] # Stock price
-        option_ids = run_bot(symbol) # Run the bot to get the option ids
+        option_ids = run_bot(symbol, True, startD, endD, freq) # Run the bot to get the option ids
 
         for option_id in option_ids:
             # Fetch the option
@@ -36,14 +36,15 @@ def backtest_bot(symbol, startD, endD, freq = '1d'):
 
     return numTrades, numWin, numLose, totalProfit
 
-symbol = 'AAPL'
-start_date = '2023-01-01'
-end_date = '2023-12-31'
+# Example usage
+# symbol = 'AAPL'
+# start_date = '2023-01-01'
+# end_date = '2023-12-31'
 
-numTrades, numWin, numLose, totalProfit = backtest_bot(symbol, start_date, end_date)
+# numTrades, numWin, numLose, totalProfit = backtest_bot(symbol, start_date, end_date)
 
-print("************************************************")
-print(f"Total trades: {numTrades}")
-print(f"Winning trades: {numWin}")
-print(f"Losing trades: {numLose}")
-print(f"Total profit: {totalProfit}")
+# print("************************************************")
+# print(f"Total trades: {numTrades}")
+# print(f"Winning trades: {numWin}")
+# print(f"Losing trades: {numLose}")
+# print(f"Total profit: {totalProfit}")
