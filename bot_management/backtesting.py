@@ -3,7 +3,8 @@ import pandas as pandas
 import yfinance as yf
 from scipy.stats import norm
 from datetime import datetime
-from bot import run_bot
+from ..bot import run_bot
+
 
 def backtest_bot(symbol, startD, endD, freq = '1d'):
     data = yf.download(symbol, start=startD, end=endD, interval=freq)

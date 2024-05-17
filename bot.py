@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 import os
 import yfinance as yf
 import numpy as np
-from greek_management import manage_greeks
+from bot_management.greek_management import manage_greeks
 
 # Get the current date
 current_date = datetime.now(utc)
