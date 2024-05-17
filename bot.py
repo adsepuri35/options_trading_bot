@@ -6,7 +6,7 @@ from pytz import utc
 
 
 # Get the current date
-current_date = datetime.now()
+current_date = datetime.now(utc)
 
 # Define the ticker symbol for the stock you're interested in
 ticker_symbol = 'AAPL'
@@ -17,14 +17,8 @@ ticker = yf.Ticker(ticker_symbol)
 # Get options data
 options_data = ticker.option_chain()
 
-# The option_chain method returns a named tuple with two dataframes: calls and puts
-calls = options_data.calls
-puts = options_data.puts
-
-
 # Set your API key
 fred = Fred(api_key='a960e3f5850c128c7669ac7a257703ab')
-
 # Get the 10-year U.S. Treasury yield
 data = fred.get_series('GS10')
 risk_free_rate = data.iloc[-1] / 100
@@ -32,16 +26,17 @@ risk_free_rate = data.iloc[-1] / 100
 # Get dividend yield
 dividend_yield = ticker.info['dividendYield']
 
+# The option_chain method returns a named tuple with two dataframes: calls and puts
+calls = options_data.calls
+puts = options_data.puts
 
-# Get the current date
-current_date = datetime.now(utc)
+# for index, row in calls.iterrows():
+#     strike = row['strike']
+#     lastPrice = row['lastPrice']
+#     volatility = row['impliedVolatility']
+#     time_to_expiration = (calls['lastTradeDate'] - current_date).dt.days / 365.0
 
-for index, row in calls.iterrows():
-    strike = row['strike']
-    lastPrice = row['lastPrice']
-    volatility = row['impliedVolatility']
-    time_to_expiration = (calls['lastTradeDate'] - current_date).dt.days / 365.0
-    price, delta, gamma, vega, theta, rho = barone_adesi_whaley(lastPrice, strike, risk_free_rate, dividend_yield, time_to_expiration, volatility, 'call')
+#     price, delta, gamma, vega, theta, rho = barone_adesi_whaley(lastPrice, strike, risk_free_rate, dividend_yield, time_to_expiration, volatility, 'call')
 
 
 # # Define your trading parameters
