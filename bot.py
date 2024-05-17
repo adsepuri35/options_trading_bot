@@ -114,6 +114,9 @@ def run_bot(ticker_symbol, backtest=False, start_date=None, end_date=None, freq 
                 if (volatility <= 0.225):
                     # barone-adesi and whaley model used for low volatility
                     price, delta, gamma, vega, theta, rho = barone_adesi_whaley(lastPrice, strike, risk_free_rate, dividend_yield, time_to_expiration, volatility, 'put')
+
+                    # Uncomment for risk management details
+                    #manage_greeks(delta, gamma, vega, theta, rho, 100000, 0.5, 10, 0.1, -10)
                 else:
                     # monte carlo simulations used for high volatility 
                     price = monte_carlo(lastPrice, strike, risk_free_rate, volatility, time_to_expiration, 1000, 'put')
