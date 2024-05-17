@@ -49,21 +49,21 @@ for expiration_date in ticker.options:
     if time_to_expiration <= 0:
         continue
 
-    # for index, row in calls.iterrows():
-    #     strike = row['strike']
-    #     lastPrice = row['lastPrice']
-    #     volatility = row['impliedVolatility']
+    for index, row in calls.iterrows():
+        strike = row['strike']
+        lastPrice = row['lastPrice']
+        volatility = row['impliedVolatility']
         
-    #     try:
-    #         price, delta, gamma, vega, theta, rho = barone_adesi_whaley(lastPrice, strike, risk_free_rate, dividend_yield, time_to_expiration, volatility, 'call')
+        try:
+            price, delta, gamma, vega, theta, rho = barone_adesi_whaley(lastPrice, strike, risk_free_rate, dividend_yield, time_to_expiration, volatility, 'call')
 
-    #         if price > lastPrice * 1.05:
-    #             good += 1
-    #         else:
-    #             bad += 1
-    #     except Exception as e:
-    #         print(f"Error calculating option price for strike {strike}: {e}")
-    #         continue
+            if price > lastPrice * 1.05:
+                good += 1
+            else:
+                bad += 1
+        except Exception as e:
+            print(f"Error calculating option price for strike {strike}: {e}")
+            continue
 
     for index, row in puts.iterrows():
         strike = row['strike']
@@ -73,9 +73,9 @@ for expiration_date in ticker.options:
         try:
             price, delta, gamma, vega, theta, rho = barone_adesi_whaley(lastPrice, strike, risk_free_rate, dividend_yield, time_to_expiration, volatility, 'put')
 
-            print({price} " vs. " {lastPrice})
+            # print(f"{price} vs. {lastPrice}")
 
-            if price > lastPrice * 1.1:
+            if price < lastPrice * 0.95:
                 good += 1
             else:
                 bad += 1
@@ -83,7 +83,7 @@ for expiration_date in ticker.options:
             print(f"Error calculating option price for strike {strike}: {e}")
             continue
 
-# print(good)
-# print(bad)
+print(good)
+print(bad)
 
 
