@@ -14,17 +14,24 @@ fred = Fred(api_key='a960e3f5850c128c7669ac7a257703ab')
 data = fred.get_series('GS10')
 risk_free_rate = data.iloc[-1] / 100
 
+significance = 0.07
+
 # Function that returns list of options to make a trade on with associated option id's
 def run_bot(ticker_symbol):
 
     # Create a Ticker object
     ticker = yf.Ticker(ticker_symbol)
 
-    # Get dividend yield & check Ticker validity
+    # Check Ticker validity
+    if ticker.history(period="1d").empty:
+        print(f"Invalid ticker symbol: {ticker_symbol}")
+        return
+
+    # See if dividend yield available
     try:
         dividend_yield = ticker.info['dividendYield']
     except KeyError:
-        print(f"Invalid ticker symbol: {ticker_symbol}")
+        print(f"No dividend yield available for {ticker_symbol}")
         return
 
     good = 0
@@ -57,7 +64,7 @@ def run_bot(ticker_symbol):
             try:
                 price, delta, gamma, vega, theta, rho = barone_adesi_whaley(lastPrice, strike, risk_free_rate, dividend_yield, time_to_expiration, volatility, 'call')
 
-                if price > lastPrice * 1.05:
+                if price > lastPrice * (1 + significance):
                     good += 1
                     trades.append(option_id)
                 else:
@@ -75,7 +82,7 @@ def run_bot(ticker_symbol):
             try:
                 price, delta, gamma, vega, theta, rho = barone_adesi_whaley(lastPrice, strike, risk_free_rate, dividend_yield, time_to_expiration, volatility, 'put')
 
-                if price < lastPrice * 0.95:
+                if price < lastPrice * (1 - significance):
                     good += 1
                     trades.append(option_id)
                 else:
@@ -90,4 +97,5 @@ def run_bot(ticker_symbol):
     return trades
 
 # Sample Implementation
-# list_of_trades = run_bot("AAPL")
+list_of_trades = run_bot("TSLA")
+print(list_of_trades)
