@@ -1,20 +1,26 @@
 from models.baw import barone_adesi_whaley
 from models.monte_carlo_sim import monte_carlo
-import yfinance as yf
 from datetime import datetime
 from fredapi import Fred
 from pytz import utc
+from dotenv import load_dotenv
+import os
+import yfinance as yf
 import numpy as np
 
 # Get the current date
 current_date = datetime.now(utc)
 
 # Set your API key
-fred = Fred(api_key='a960e3f5850c128c7669ac7a257703ab')
+load_dotenv()
+api_key = os.getenv('FRED_API_KEY')
+fred = Fred(api_key=api_key)
+
 # Get the 10-year U.S. Treasury yield
 data = fred.get_series('GS10')
 risk_free_rate = data.iloc[-1] / 100
 
+#Adjust significance based on personal account balance
 significance = 0.07
 
 """
