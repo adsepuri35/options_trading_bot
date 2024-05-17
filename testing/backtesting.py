@@ -40,4 +40,4 @@ symbol = 'AAPL'
 start_date = datetime(2023, 1, 1)
 end_date = datetime(2023, 12, 31)
 
-backtest_option(symbol, start_date, end_date)
+backtest_bot(symbol, start_date, end_date)
