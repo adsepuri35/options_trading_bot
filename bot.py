@@ -1,20 +1,26 @@
 from models.baw import barone_adesi_whaley
 from models.monte_carlo_sim import monte_carlo
-import yfinance as yf
 from datetime import datetime
 from fredapi import Fred
 from pytz import utc
+from dotenv import load_dotenv
+import os
+import yfinance as yf
 import numpy as np
 
 # Get the current date
 current_date = datetime.now(utc)
 
 # Set your API key
-fred = Fred(api_key='a960e3f5850c128c7669ac7a257703ab')
+load_dotenv()
+api_key = os.getenv('FRED_API_KEY')
+fred = Fred(api_key=api_key)
+
 # Get the 10-year U.S. Treasury yield
 data = fred.get_series('GS10')
 risk_free_rate = data.iloc[-1] / 100
 
+#Adjust significance based on personal account balance
 significance = 0.07
 
 """
@@ -22,12 +28,11 @@ significance = 0.07
 
     Parameters:
     ticker_symbol (str): The ticker symbol of the stock to trade options on.
-    model (str): The model to use for deciding which options to trade.
 
     Returns:
     list: A list of option contract symbols to trade on.
 """
-def run_bot(ticker_symbol, model):
+def run_bot(ticker_symbol):
 
     # Create a Ticker object
     ticker = yf.Ticker(ticker_symbol)
@@ -72,9 +77,11 @@ def run_bot(ticker_symbol, model):
             volatility = row['impliedVolatility']
             
             try:
-                if (model == "baw"):
+                if (volatility <= 0.225):
+                    # barone-adesi and whaley model used for low volatility
                     price, delta, gamma, vega, theta, rho = barone_adesi_whaley(lastPrice, strike, risk_free_rate, dividend_yield, time_to_expiration, volatility, 'call')
-                elif (model == "mc"):
+                else:
+                    # monte carlo simulations used for high volatility 
                     price = monte_carlo(lastPrice, strike, risk_free_rate, volatility, time_to_expiration, 1000, 'call')
 
                 if price > lastPrice * (1 + significance):
@@ -93,9 +100,11 @@ def run_bot(ticker_symbol, model):
             volatility = row['impliedVolatility']
             
             try:
-                if (model == "baw"):
+                if (volatility <= 0.225):
+                    # barone-adesi and whaley model used for low volatility
                     price, delta, gamma, vega, theta, rho = barone_adesi_whaley(lastPrice, strike, risk_free_rate, dividend_yield, time_to_expiration, volatility, 'put')
-                elif (model == "mc"):
+                else:
+                    # monte carlo simulations used for high volatility 
                     price = monte_carlo(lastPrice, strike, risk_free_rate, volatility, time_to_expiration, 1000, 'put')
 
                 if price < lastPrice * (1 - significance):
@@ -112,6 +121,6 @@ def run_bot(ticker_symbol, model):
 
     return trades
 
-# # Sample Implementation
-# list_of_trades = run_bot("AAPL", "baw")
+# Sample Implementation
+# list_of_trades = run_bot("AAPL")
 # print(list_of_trades)

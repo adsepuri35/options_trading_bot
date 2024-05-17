@@ -1,5 +1,4 @@
-
-import math
+import numpy as np
 from scipy.stats import norm
 import pandas as pandas
 from datetime import datetime
@@ -7,7 +6,7 @@ from models.baw import barone_adesi_whaley
 import yfinance as yf
 
 
-def backtest_option(symbol, startD, endD, freq = '1d'):
+def backtest_bot(symbol, startD, endD, freq = '1d'):
     data = yf.download(symbol, start=startD, end=endD, interval=freq)
     numTrades = 0
     numWin = 0
@@ -42,5 +41,3 @@ start_date = datetime(2023, 1, 1)
 end_date = datetime(2023, 12, 31)
 
 backtest_option(symbol, start_date, end_date)
-
-#calc the profit and count winning and losing trades

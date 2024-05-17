@@ -1,2 +1,6 @@
-Hide API Key
-Handle case where dividend yield does not exist for a certain ticker
+Finish BackTesting Engine
+Finish Risk Management
+Containerize Project Using Docker
+Complete README.md
+Jupyter Notebook?
+Add Licensing
