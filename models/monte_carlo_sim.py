@@ -39,14 +39,14 @@ def monte_carlo(S0, K, r, sigma, T, num_paths, option_type):
     
     return option_price
 
-# Example usage
-S0 = 100  # Initial asset price
-K = 102  # Strike price
-r = 0.05  # Risk-free rate
-sigma = 0.15  # Volatility
-T = 0.8  # Time to expiration
-N = 1000  # Number of paths
-option_type = 'call'  # Option type ('call' or 'put')
+# # Example usage
+# S0 = 100  # Initial asset price
+# K = 102  # Strike price
+# r = 0.05  # Risk-free rate
+# sigma = 0.15  # Volatility
+# T = 0.8  # Time to expiration
+# N = 1000  # Number of paths
+# option_type = 'call'  # Option type ('call' or 'put')
 
-option_price = monte_carlo(S0, K, r, sigma, T, N, option_type)
-print(f"Estimated option price: {option_price}")
+# option_price = monte_carlo(S0, K, r, sigma, T, N, option_type)
+# print(f"Estimated option price: {option_price}")

@@ -1,4 +1,5 @@
 from models.baw import barone_adesi_whaley
+from models.monte_carlo_sim import monte_carlo
 import yfinance as yf
 from datetime import datetime
 from fredapi import Fred
@@ -17,7 +18,7 @@ risk_free_rate = data.iloc[-1] / 100
 significance = 0.07
 
 # Function that returns list of options to make a trade on with associated option id's
-def run_bot(ticker_symbol):
+def run_bot(ticker_symbol, model):
 
     # Create a Ticker object
     ticker = yf.Ticker(ticker_symbol)
@@ -62,7 +63,10 @@ def run_bot(ticker_symbol):
             volatility = row['impliedVolatility']
             
             try:
-                price, delta, gamma, vega, theta, rho = barone_adesi_whaley(lastPrice, strike, risk_free_rate, dividend_yield, time_to_expiration, volatility, 'call')
+                if (model == "baw"):
+                    price, delta, gamma, vega, theta, rho = barone_adesi_whaley(lastPrice, strike, risk_free_rate, dividend_yield, time_to_expiration, volatility, 'call')
+                elif (model == "mc"):
+                    price = monte_carlo(lastPrice, strike, risk_free_rate, volatility, time_to_expiration, 1000, 'call')
 
                 if price > lastPrice * (1 + significance):
                     good += 1
@@ -80,7 +84,10 @@ def run_bot(ticker_symbol):
             volatility = row['impliedVolatility']
             
             try:
-                price, delta, gamma, vega, theta, rho = barone_adesi_whaley(lastPrice, strike, risk_free_rate, dividend_yield, time_to_expiration, volatility, 'put')
+                if (model == "baw"):
+                    price, delta, gamma, vega, theta, rho = barone_adesi_whaley(lastPrice, strike, risk_free_rate, dividend_yield, time_to_expiration, volatility, 'put')
+                elif (model == "mc"):
+                    price = monte_carlo(lastPrice, strike, risk_free_rate, volatility, time_to_expiration, 1000, 'put')
 
                 if price < lastPrice * (1 - significance):
                     good += 1
@@ -96,6 +103,6 @@ def run_bot(ticker_symbol):
 
     return trades
 
-# Sample Implementation
-list_of_trades = run_bot("TSLA")
-print(list_of_trades)
+# # Sample Implementation
+# list_of_trades = run_bot("AAPL", "mc")
+# print(list_of_trades)
