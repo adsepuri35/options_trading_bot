@@ -136,5 +136,5 @@ def run_bot(ticker_symbol, backtest=False, start_date=None, end_date=None, freq 
     return trades
 
 # Sample Implementation
-# list_of_trades = run_bot("AAPL")
-# print(list_of_trades)
+list_of_trades = run_bot("AAPL")
+print(list_of_trades)
