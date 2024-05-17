@@ -14,7 +14,7 @@ fred = Fred(api_key='a960e3f5850c128c7669ac7a257703ab')
 data = fred.get_series('GS10')
 risk_free_rate = data.iloc[-1] / 100
 
-
+# Function that returns list of options to make a trade on with associated option id's
 def run_bot(ticker_symbol):
 
     # Create a Ticker object
@@ -29,6 +29,8 @@ def run_bot(ticker_symbol):
 
     good = 0
     bad = 0
+
+    trades = []
 
     for expiration_date in ticker.options:
         options_data = ticker.option_chain(expiration_date)
@@ -47,6 +49,7 @@ def run_bot(ticker_symbol):
             continue
 
         for index, row in calls.iterrows():
+            option_id = row['contractSymbol']
             strike = row['strike']
             lastPrice = row['lastPrice']
             volatility = row['impliedVolatility']
@@ -56,6 +59,7 @@ def run_bot(ticker_symbol):
 
                 if price > lastPrice * 1.05:
                     good += 1
+                    trades.append(option_id)
                 else:
                     bad += 1
             except Exception as e:
@@ -63,6 +67,7 @@ def run_bot(ticker_symbol):
                 continue
 
         for index, row in puts.iterrows():
+            option_id = row['contractSymbol']
             strike = row['strike']
             lastPrice = row['lastPrice']
             volatility = row['impliedVolatility']
@@ -70,18 +75,19 @@ def run_bot(ticker_symbol):
             try:
                 price, delta, gamma, vega, theta, rho = barone_adesi_whaley(lastPrice, strike, risk_free_rate, dividend_yield, time_to_expiration, volatility, 'put')
 
-                # print(f"{price} vs. {lastPrice}")
-
                 if price < lastPrice * 0.95:
                     good += 1
+                    trades.append(option_id)
                 else:
                     bad += 1
             except Exception as e:
                 print(f"Error calculating option price for strike {strike}: {e}")
                 continue
 
-    print(good)
-    print(bad)
+    # print(good)
+    # print(bad)
 
+    return trades
 
-run_bot("AAPL")
+# Sample Implementation
+# list_of_trades = run_bot("AAPL")
