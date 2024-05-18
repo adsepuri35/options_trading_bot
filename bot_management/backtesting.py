@@ -6,15 +6,15 @@ from datetime import datetime
 from ..bot import run_bot
 
 
-def backtest_bot(symbol, startD, endD, freq = '1d'):
-    data = yf.download(symbol, start=startD, end=endD, interval=freq)
+def backtest_bot(symbol, start_date, end_date, freq = '1d'):
+    data = yf.download(symbol, start=start_date, end=end_date, interval=freq)
     numTrades = 0
     numWin = 0
     numLose = 0
     totalProfit = 0
     for index, row in data.iterrows():
         S = row['Close'] # Stock price
-        option_ids = run_bot(symbol, True, startD, endD, freq) # Run the bot to get the option ids
+        option_ids = run_bot(symbol, True, start_date, end_date, freq) # Run the bot to get the option ids
 
         for option_id in option_ids:
             # Fetch the option
