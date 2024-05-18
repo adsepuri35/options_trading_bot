@@ -1,6 +1,25 @@
 # Options Trading Bot
 
-This project is an options trading bot that uses advanced models and techniques to make profitable trades in both low and high volatility markets. The bot is designed to be flexible, efficient, and easy to deploy and maintain.
+This project is an options trading bot for standard American stock options that uses advanced models and techniques to make profitable trades in both low and high volatility markets. The bot is designed to be flexible, efficient, and easy to deploy and maintain.
+
+## Models
+
+### Barone-Adesi and Whaley Pricing Model
+
+The Barone-Adesi and Whaley model is ananalytical approximation method for pricing American options and was introduced as an extension of the Black-Scholes model, aiming to account for the early exercise premium of American options.
+
+The value of the trade is given by:
+![Example Image](./images/baw1.png)
+
+The BAW model uses a quadratic approximation to the early exercise boundary, which allows for a closed-form solution for the option price. This makes the model computationally efficient and suitable for pricing American options on non-dividend-paying stocks and indices.
+In low volatility environments, the BAW model is known to perform well for several reasons:
+
+1. Accuracy: The quadratic approximation used in the BAW model works particularly well when the early exercise premium is small, which is typically the case in low volatility markets. The model's accuracy in these conditions is generally comparable to more computationally intensive numerical methods.
+2. Computational Efficiency: The closed-form solution of the BAW model makes it computationally efficient, allowing for fast pricing and easy integration into trading systems or real-time applications.
+3. Stability: The model's behavior is relatively stable in low volatility regimes, providing consistent and reliable pricing results.
+
+However, it's important to note that the BAW model can become less accurate in high volatility environments or when the underlying asset pays significant dividends. In such cases, alternative methods like binomial trees or Monte Carlo simulations may be more appropriate
+
 
 ## Features
 
