@@ -1,6 +1,6 @@
 # Options Trading Bot
 
-This is an options trading bot for standard American stock options that uses advanced models and techniques to make profitable trades in both low and high volatility markets. The bot is designed to be flexible, efficient, and easy to deploy and maintain.
+This is an options trading bot for American stock options that uses advanced models and techniques to make profitable trades in both low and high volatility markets. The bot is designed to be flexible, efficient, and easy to deploy and maintain.
 
 ## Models
 
