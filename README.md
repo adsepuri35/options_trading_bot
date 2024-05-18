@@ -45,6 +45,28 @@ Monte Carlo simulations perform well in high volatility environments for several
 2. **Capture of Volatility Dynamics**: By simulating the underlying asset's price paths directly, Monte Carlo simulations can accurately capture the effects of high volatility, including jumps, stochastic volatility, and other non-standard dynamics.
 3. **Convergence**: With a sufficiently large number of simulated paths, Monte Carlo simulations can converge to the true option value, providing reliable results even in highly volatile market conditions.
 
+## Bot Implementation
+
+The core functionality of the options trading bot is implemented in the `run_bot` function, which takes the following parameters:
+
+- `ticker_symbol` (str): The ticker symbol of the stock to trade options on.
+- `backtest` (bool, optional): Whether to run the bot in backtest mode. Default is `False`.
+- `start_date` (str, optional): The start date of the backtest period (for backtesting purposes only).
+- `end_date` (str, optional): The end date of the backtest period (for backtesting purposes only).
+- `freq` (str, optional): The frequency of the data. Default is '1d' for daily data (for backtesting purposes only).
+
+The `run_bot` function performs the following steps:
+
+1. **Fetch Stock Data**: It fetches historical data for the specified stock using the `yfinance` library.
+2. **Retrieve Option Chain**: It retrieves the option chain (calls and puts) for the stock using the `yfinance` library.
+3. **Calculate Option Prices**: For each option in the chain, it calculates the theoretical option price using either the Barone-Adesi and Whaley (BAW) model for low volatility scenarios or Monte Carlo simulations for high volatility scenarios.
+4. **Identify Trading Opportunities**: It compares the calculated option price with the market price and identifies potential trading opportunities based on a predefined significance level.
+5. **Return Trading Signals**: The function returns a list of option contract symbols that represent potential trading opportunities.
+
+The bot also incorporates risk management by utilizing the `manage_greeks` function from the `bot_management.greek_management` module. This function calculates and manages the Greeks (Delta, Gamma, Vega, Theta, and Rho) to adjust positions and hedge risk accordingly.
+
+Additionally, the bot retrieves the 10-year U.S. Treasury yield from the FRED API to use as the risk-free rate for option pricing calculations.
+
 ## Backtesting Engine
 
 The options trading bot includes a backtesting engine that allows you to evaluate the performance of your trading strategies on historical market data before deploying them in live markets. This feature is essential for testing and refining your strategies, assessing risk, and gaining confidence in your bot's performance.
